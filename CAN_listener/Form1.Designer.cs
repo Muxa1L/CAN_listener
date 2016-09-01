@@ -31,6 +31,9 @@
             this.portSelector = new System.Windows.Forms.ComboBox();
             this.openPortBtn = new System.Windows.Forms.Button();
             this.baudRate = new System.Windows.Forms.ComboBox();
+            this.canFreq = new System.Windows.Forms.ComboBox();
+            this.canSpeed = new System.Windows.Forms.ComboBox();
+            this.ConfShield = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // portSelector
@@ -59,11 +62,41 @@
             this.baudRate.Size = new System.Drawing.Size(121, 21);
             this.baudRate.TabIndex = 2;
             // 
+            // canFreq
+            // 
+            this.canFreq.FormattingEnabled = true;
+            this.canFreq.Location = new System.Drawing.Point(347, 10);
+            this.canFreq.Name = "canFreq";
+            this.canFreq.Size = new System.Drawing.Size(121, 21);
+            this.canFreq.TabIndex = 3;
+            this.canFreq.SelectedIndexChanged += new System.EventHandler(this.canFreq_SelectedIndexChanged);
+            // 
+            // canSpeed
+            // 
+            this.canSpeed.FormattingEnabled = true;
+            this.canSpeed.Location = new System.Drawing.Point(474, 10);
+            this.canSpeed.Name = "canSpeed";
+            this.canSpeed.Size = new System.Drawing.Size(121, 21);
+            this.canSpeed.TabIndex = 4;
+            // 
+            // ConfShield
+            // 
+            this.ConfShield.Location = new System.Drawing.Point(601, 10);
+            this.ConfShield.Name = "ConfShield";
+            this.ConfShield.Size = new System.Drawing.Size(75, 23);
+            this.ConfShield.TabIndex = 5;
+            this.ConfShield.Text = "ConfShield";
+            this.ConfShield.UseVisualStyleBackColor = true;
+            this.ConfShield.Click += new System.EventHandler(this.ConfShield_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1276, 705);
+            this.Controls.Add(this.ConfShield);
+            this.Controls.Add(this.canSpeed);
+            this.Controls.Add(this.canFreq);
             this.Controls.Add(this.baudRate);
             this.Controls.Add(this.openPortBtn);
             this.Controls.Add(this.portSelector);
@@ -79,6 +112,9 @@
         private System.Windows.Forms.ComboBox portSelector;
         private System.Windows.Forms.Button openPortBtn;
         private System.Windows.Forms.ComboBox baudRate;
+        private System.Windows.Forms.ComboBox canFreq;
+        private System.Windows.Forms.ComboBox canSpeed;
+        private System.Windows.Forms.Button ConfShield;
     }
 }
 

@@ -15,6 +15,8 @@ namespace CAN_listener
     public partial class Form1 : Form
     {
         private SerialPort port;
+        private byte selectedFreq;
+        private byte selectedBaudrate;
         public Form1()
         {
             InitializeComponent();
@@ -36,11 +38,21 @@ namespace CAN_listener
             baudRate.Items.Add("38400");
             baudRate.Items.Add("57600");
             baudRate.Items.Add("115200");
-            baudRate.SelectedIndex = 3;
+            baudRate.SelectedIndex = 5;
+            canFreq.Items.Add("20MHz");
+            canFreq.Items.Add("16MHz");
+            canFreq.Items.Add("8MHz");
+            canFreq.SelectedIndex = 2;
+            canSpeed.Items.Add("33Kb");
+            canSpeed.Items.Add("125Kb");
+            canSpeed.Items.Add("500Kb");
+            canSpeed.SelectedIndex = 0;
             portSelector.Sorted = true;
             portSelector.Text = portSelector.Items[0].ToString();
             baudRate.Update();
             portSelector.Update();
+            canFreq.Update();
+            canSpeed.Update();
             
         }
 
@@ -65,6 +77,34 @@ namespace CAN_listener
             string indata = sp.ReadExisting();
             Console.WriteLine("Data Received:");
             Console.Write(indata);
+        }
+
+        private void ConfShield_Click(object sender, EventArgs e)
+        {
+            if (port.IsOpen)
+            {
+                byte configData = (selectedFreq << 4) + selectedBaudrate;
+            }
+        }
+
+        private void canFreq_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cbox = (ComboBox)sender;
+            switch (cbox.SelectedIndex)
+            {
+                case 0:
+                    selectedBaudrate = 5;
+                    break;
+                case 1:
+                    selectedBaudrate = 11;
+                    break;
+                case 2:
+                    selectedBaudrate = 14;
+                    break;
+                default:
+                    selectedBaudrate = 5;
+                    break;
+            }
         }
     }
 }
