@@ -78,6 +78,7 @@
             this.canSpeed.Name = "canSpeed";
             this.canSpeed.Size = new System.Drawing.Size(121, 21);
             this.canSpeed.TabIndex = 4;
+            this.canSpeed.SelectedIndexChanged += new System.EventHandler(this.canSpeed_SelectedIndexChanged);
             // 
             // ConfShield
             // 

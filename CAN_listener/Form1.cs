@@ -15,8 +15,8 @@ namespace CAN_listener
     public partial class Form1 : Form
     {
         private SerialPort port;
-        private byte selectedFreq;
-        private byte selectedBaudrate;
+        private int selectedFreq;
+        private int selectedBaudrate;
         public Form1()
         {
             InitializeComponent();
@@ -81,13 +81,21 @@ namespace CAN_listener
 
         private void ConfShield_Click(object sender, EventArgs e)
         {
-            if (port.IsOpen)
+            //if (port.IsOpen)
             {
-                byte configData = (selectedFreq << 4) + selectedBaudrate;
+                int result = (selectedFreq << 4) + selectedBaudrate;
+                byte configData = (byte)result;
+                Console.WriteLine(configData);
             }
         }
 
         private void canFreq_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox cbox = (ComboBox)sender;
+            selectedFreq = cbox.SelectedIndex;
+        }
+
+        private void canSpeed_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox cbox = (ComboBox)sender;
             switch (cbox.SelectedIndex)
