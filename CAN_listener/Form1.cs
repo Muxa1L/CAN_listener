@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Reflection;
+using System.Threading;
 
 namespace CAN_listener
 {
     public partial class Form1 : Form
     {
         private SerialPort port;
-        private int selectedFreq;
-        private int selectedBaudrate;
+        private byte selectedFreq = 2;
+        private byte selectedBaudrate;
         public Form1()
         {
             InitializeComponent();
@@ -74,28 +75,64 @@ namespace CAN_listener
                         SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-            string indata = sp.ReadExisting();
+            //string indata = sp.ReadExisting();
+            string indata = sp.ReadLine().Trim();
             Console.WriteLine("Data Received:");
             Console.Write(indata);
+
+            string[] data = indata.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string messData = "";
+            if (data.Length < 6)
+                return;
+            for (int i = 6; i < data.Length; i++)
+            {
+                messData = messData + Convert.ToString(Convert.ToInt32(data[i], 16), 2);
+            }
+            //if (messData == "")
+            //  return;
+            messages.Invoke(
+                (ThreadStart)delegate ()
+                {
+                    ListViewItem item = messages.FindItemWithText(data[2]);
+
+                    if (item != null)
+                    {
+                        if (item.SubItems[3].Text != messData)
+                        {
+                            item.SubItems[3].Text = messData;
+                        }
+                    }
+                    else
+                    {
+                        ListViewItem newitem = new ListViewItem(new string[] { data[2], data[0], data[4], messData });
+                        messages.Invoke(
+                            (ThreadStart)delegate ()
+                            {
+                                messages.Items.Add(newitem);
+                            }
+                        );
+
+                    }
+                }
+            );
+            
+            
+
+            //Standard ID: 0x1E5       DLC: 8  Data: 0x46 0xFF 0xE9 0xC0 0x00 0x00 0x15 0x00
+            //Extended ID: 0x10230040  DLC: 8  Data: 0x10 0x01 0x00 0x04 0x10 0x01 0x00 0x04
         }
 
         private void ConfShield_Click(object sender, EventArgs e)
         {
             //if (port.IsOpen)
             {
-                int result = (selectedFreq << 4) + selectedBaudrate;
-                byte configData = (byte)result;
-                Console.WriteLine(configData);
+                int configData = (selectedFreq << 4) + selectedBaudrate;
+                String test = (configData + " " + decimal.GetBits(configData).ToString());
+                //Console.WriteLine( test);
             }
         }
 
         private void canFreq_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ComboBox cbox = (ComboBox)sender;
-            selectedFreq = cbox.SelectedIndex;
-        }
-
-        private void canSpeed_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox cbox = (ComboBox)sender;
             switch (cbox.SelectedIndex)
