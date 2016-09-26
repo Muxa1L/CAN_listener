@@ -83,7 +83,6 @@
             this.canSpeed.Name = "canSpeed";
             this.canSpeed.Size = new System.Drawing.Size(121, 21);
             this.canSpeed.TabIndex = 4;
-            this.canSpeed.SelectedIndexChanged += new System.EventHandler(this.canSpeed_SelectedIndexChanged);
             // 
             // ConfShield
             // 
@@ -103,12 +102,15 @@
             this.DLC,
             this.Data});
             messages.GridLines = true;
+            messages.HideSelection = false;
             messages.Location = new System.Drawing.Point(12, 39);
+            messages.MultiSelect = false;
             messages.Name = "messages";
             messages.Size = new System.Drawing.Size(664, 287);
             messages.TabIndex = 6;
             messages.UseCompatibleStateImageBehavior = false;
             messages.View = System.Windows.Forms.View.Details;
+            messages.SelectedIndexChanged += new System.EventHandler(messages_SelectedIndexChanged);
             // 
             // type
             // 
@@ -154,11 +156,11 @@
         private System.Windows.Forms.ComboBox canFreq;
         private System.Windows.Forms.ComboBox canSpeed;
         private System.Windows.Forms.Button ConfShield;
-        private static System.Windows.Forms.ListView messages;
         private System.Windows.Forms.ColumnHeader type;
         private System.Windows.Forms.ColumnHeader ID;
         private System.Windows.Forms.ColumnHeader DLC;
         private System.Windows.Forms.ColumnHeader Data;
+        private static System.Windows.Forms.ListView messages;
     }
 }
 

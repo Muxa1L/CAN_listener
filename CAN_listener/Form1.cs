@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.Reflection;
 using System.Threading;
+using System.Collections.Concurrent;
 
 namespace CAN_listener
 {
@@ -18,6 +19,8 @@ namespace CAN_listener
         private SerialPort port;
         private byte selectedFreq = 2;
         private byte selectedBaudrate;
+        private int iter = 0;
+        static private ConcurrentDictionary<string, List<string>> history = new ConcurrentDictionary<string, List<string>>();
         public Form1()
         {
             InitializeComponent();
@@ -99,6 +102,8 @@ namespace CAN_listener
                     {
                         if (item.SubItems[3].Text != messData)
                         {
+                            List<string> exHist = history.GetOrAdd(data[2], new List<string>());
+                            exHist.Add(item.SubItems[3].Text + " : " + DateTime.Now);
                             item.SubItems[3].Text = messData;
                         }
                     }
@@ -124,6 +129,38 @@ namespace CAN_listener
 
         private void ConfShield_Click(object sender, EventArgs e)
         {
+            string indata = "Standard ID: 0x1E5       DLC: 8  Data: 0x46 0xFF 0xE9 0xC0 0x00 0x00 0x15 0x00";
+            string[] data = indata.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string messData = "";
+
+            if (data.Length < 6)
+                return;
+
+            for (int i = 6; i < data.Length; i++)
+            {
+                messData = messData + Convert.ToString(Convert.ToInt32(data[i], 16)+iter, 2);
+            }
+            iter++;
+            ListViewItem item = messages.FindItemWithText(data[2]);
+
+            if (item != null)
+            {
+                if (item.SubItems[3].Text != messData)
+                {
+                    item.SubItems[3].Text = messData;
+                }
+            }
+            else
+            {
+                ListViewItem newitem = new ListViewItem(new string[] { data[2], data[0], data[4], messData });
+                messages.Invoke(
+                    (ThreadStart)delegate()
+                    {
+                        messages.Items.Add(newitem);
+                    }
+                );
+
+            }
             //if (port.IsOpen)
             {
                 int configData = (selectedFreq << 4) + selectedBaudrate;
@@ -150,6 +187,11 @@ namespace CAN_listener
                     selectedBaudrate = 5;
                     break;
             }
+        }
+
+        private void messages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
