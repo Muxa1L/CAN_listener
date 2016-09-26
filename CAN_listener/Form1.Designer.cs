@@ -34,6 +34,11 @@
             this.canFreq = new System.Windows.Forms.ComboBox();
             this.canSpeed = new System.Windows.Forms.ComboBox();
             this.ConfShield = new System.Windows.Forms.Button();
+            messages = new System.Windows.Forms.ListView();
+            this.type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.DLC = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // portSelector
@@ -89,11 +94,44 @@
             this.ConfShield.UseVisualStyleBackColor = true;
             this.ConfShield.Click += new System.EventHandler(this.ConfShield_Click);
             // 
+            // messages
+            // 
+            messages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.type,
+            this.ID,
+            this.DLC,
+            this.Data});
+            messages.GridLines = true;
+            messages.Location = new System.Drawing.Point(12, 39);
+            messages.Name = "messages";
+            messages.Size = new System.Drawing.Size(664, 287);
+            messages.TabIndex = 6;
+            messages.UseCompatibleStateImageBehavior = false;
+            messages.View = System.Windows.Forms.View.Details;
+            // 
+            // type
+            // 
+            this.type.Text = "type";
+            // 
+            // ID
+            // 
+            this.ID.Text = "ID";
+            // 
+            // DLC
+            // 
+            this.DLC.Text = "DLC";
+            // 
+            // Data
+            // 
+            this.Data.Text = "Data";
+            this.Data.Width = 421;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1276, 705);
+            this.Controls.Add(messages);
             this.Controls.Add(this.ConfShield);
             this.Controls.Add(this.canSpeed);
             this.Controls.Add(this.canFreq);
@@ -115,6 +153,11 @@
         private System.Windows.Forms.ComboBox canFreq;
         private System.Windows.Forms.ComboBox canSpeed;
         private System.Windows.Forms.Button ConfShield;
+        private static System.Windows.Forms.ListView messages;
+        private System.Windows.Forms.ColumnHeader type;
+        private System.Windows.Forms.ColumnHeader ID;
+        private System.Windows.Forms.ColumnHeader DLC;
+        private System.Windows.Forms.ColumnHeader Data;
     }
 }
 
